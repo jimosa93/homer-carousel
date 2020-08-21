@@ -1,38 +1,50 @@
-.App {
+/* Image Selector */
+.image-selector .item {
+  width: 100px;
+  margin: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  cursor: pointer;
+}
+.image-selector .item.selected {
+  border: 2px solid rgb(66, 66, 228);
+}
+.image-selector .item .item-body {
+  padding: 10px;
+}
+.image-selector .item img {
+  max-width: 100%;
+}
+
+/* Carousel */
+
+.slick-slide img {
+  width: 99%;
+}
+
+.slick-next:before,
+.slick-prev:before {
+  color: #000;
+}
+
+.slick-initialized .slick-slide {
+  cursor: pointer;
+}
+
+/* Image Viewer */
+.image-viewer {
   text-align: center;
+  margin-bottom: 10px;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.image-viewer img {
+  width: 500px;
+  max-width: 100%;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.image-viewer .image-container {
+  border: 1px solid #abafc3;
+  width: 500px;
+  margin: 0 auto;
+  padding: 10px;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.image-viewer .image-container p {
+  padding-top: 10px;
 }
