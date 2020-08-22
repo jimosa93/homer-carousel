@@ -20,7 +20,7 @@ const CarouselView = ({
   return (
     <div>
       <div className="row mb-3">
-        <div className="input-group col-lg-6">
+        <div className="input-group col-lg-3">
           <div className="input-group-prepend">
             <label className="input-group-text" htmlFor="inputGroupSelect01">
               Slides to show
@@ -43,7 +43,10 @@ const CarouselView = ({
       <Slider {...settings}>
         {carouselImages.map((image, i) => (
           <div key={i} onClick={() => setImageView(image)}>
-            <img src={`/carouselImages/${image.imageName}`} alt="" />
+            <div class="slide-img">
+              <img src={`/carouselImages/${image.imageName}`} alt="" />
+            </div>
+            <div class="slide-caption">{image.imageCaption}</div>
           </div>
         ))}
       </Slider>
