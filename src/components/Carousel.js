@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { GlobalContext } from '../context/GlobalState';
 import CarouselView from './CarouselView';
 import CarouselEdit from './CarouselEdit';
 import ImageViewer from './ImageViewer';
 
-const Carousel = props => {
-  const { carouselImages } = props;
-  let slidesImages = 3;
-  if (carouselImages.length < 3) slidesImages = carouselImages.length;
-
+const Carousel = () => {
+  const { carouselImages } = useContext(GlobalContext);
+  let slides = carouselImages.length < 3 ? carouselImages.length : 3;
+  const [slidesToShow, setSlidesToShow] = useState(slides);
   const [mode, setMode] = useState('View');
-  const [slidesToShow, setSlidesToShow] = useState(slidesImages);
   const [imageView, setImageView] = useState({});
 
   useEffect(() => {
-    setSlidesToShow(slidesImages);
+    setSlidesToShow(slides);
+    // eslint-disable-next-line
   }, [carouselImages]);
 
   return (
@@ -44,21 +44,18 @@ const Carousel = props => {
       {mode === 'View' ? (
         <>
           <CarouselView
-            carouselImages={carouselImages}
             slidesToShow={slidesToShow}
             setSlidesToShow={setSlidesToShow}
             setImageView={setImageView}
           />
           {Object.entries(imageView).length !== 0 && (
-            <ImageViewer imageView={imageView} />
+            <>
+              <ImageViewer imageView={imageView} />
+            </>
           )}
         </>
       ) : (
-        <CarouselEdit
-          {...props}
-          imageView={imageView}
-          setImageView={setImageView}
-        />
+        <CarouselEdit imageView={imageView} setImageView={setImageView} />
       )}
     </div>
   );

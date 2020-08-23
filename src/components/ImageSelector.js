@@ -1,50 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { GlobalContext } from '../context/GlobalState';
 
-const ImageSelector = ({
-  selectableImages,
-  setSelectableImages,
-  setCarouselImages,
-  carouselImages
-}) => {
-  const imagesList = selectableImages.map(image => ({
-    ...image,
-    selected: false
-  }));
+const ImageSelector = () => {
+  const { imageGallery, addImagesToCarousel } = useContext(GlobalContext);
 
-  const [tempSelectableImages, setTempSelectableImages] = useState(imagesList);
+  const [tempImageGallery, setTempImageGallery] = useState(imageGallery);
   const [enableAddButton, setEnableAddButton] = useState(false);
 
   useEffect(() => {
-    setTempSelectableImages(selectableImages);
-  }, [selectableImages]);
+    setTempImageGallery(imageGallery);
+  }, [imageGallery]);
 
   const toggleSelectImage = i => {
-    const newImages = [...tempSelectableImages];
+    const newImages = [...tempImageGallery];
     newImages[i].selected = !newImages[i].selected;
-    setTempSelectableImages(newImages);
-    if (tempSelectableImages.some(image => image.selected))
+    setTempImageGallery(newImages);
+    if (tempImageGallery.some(image => image.selected))
       setEnableAddButton(true);
     else setEnableAddButton(false);
   };
 
   const addImages = () => {
-    const addedImages = tempSelectableImages.filter(image => image.selected);
-    const removeImagesFromList = tempSelectableImages.filter(
-      image => !image.selected
-    );
-    addedImages.map(image => {
-      delete image.selected;
-      return image;
-    });
-    setSelectableImages(removeImagesFromList);
-    setCarouselImages([...carouselImages, ...addedImages]);
+    addImagesToCarousel(tempImageGallery);
     setEnableAddButton(false);
   };
 
   return (
-    <div className="image-selector mb-5">
-      <div className="row">
-        {tempSelectableImages.map((image, i) => {
+    <div className="row image-selector mb-5 border pt-2 pb-2">
+      <div className="col">
+        {imageGallery.length > 0 && (
+          <div className="alert alert-primary" role="alert">
+            Select images from gallery to add to carousel
+          </div>
+        )}
+      </div>
+      <div className="w-100"></div>
+      <div className="col">
+        {tempImageGallery.map((image, i) => {
           let itemClass = 'item ' + (image.selected ? 'selected' : '');
           return (
             <div
@@ -58,14 +50,19 @@ const ImageSelector = ({
           );
         })}
       </div>
-      <button
-        type="button"
-        className="btn btn-lg btn-primary"
-        onClick={() => addImages()}
-        disabled={!enableAddButton}
-      >
-        Add
-      </button>
+      <div className="w-100"></div>
+      <div className="col mt-2">
+        {imageGallery.length > 0 && (
+          <button
+            type="button"
+            className="btn btn-lg btn-primary"
+            onClick={() => addImages()}
+            disabled={!enableAddButton}
+          >
+            Add
+          </button>
+        )}
+      </div>
     </div>
   );
 };

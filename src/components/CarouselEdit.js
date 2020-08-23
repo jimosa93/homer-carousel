@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { GlobalContext } from '../context/GlobalState';
 
-const CarouselEdit = ({
-  carouselImages,
-  setCarouselImages,
-  selectableImages,
-  setSelectableImages,
-  setImageView
-}) => {
-  const imagesList = carouselImages.map(image => ({
-    ...image,
-    selected: false
-  }));
-
-  const [tempDeletedImages, setTempDeletedImages] = useState(imagesList);
+const CarouselEdit = ({ setImageView }) => {
+  const { carouselImages, deleteImagesFromCarousel } = useContext(
+    GlobalContext
+  );
+  const [tempDeletedImages, setTempDeletedImages] = useState(carouselImages);
   const [enableDeleteButton, setEnableAddButton] = useState(false);
 
   useEffect(() => {
@@ -20,27 +13,16 @@ const CarouselEdit = ({
   }, [carouselImages]);
 
   const toggleSelectImage = i => {
-    // console.log(carouselImages);
-    const newImages = [...tempDeletedImages];
+    const newImages = tempDeletedImages.map(a => ({ ...a }));
     newImages[i].selected = !newImages[i].selected;
     setTempDeletedImages(newImages);
-    if (tempDeletedImages.some(image => image.selected))
-      setEnableAddButton(true);
+    if (newImages.some(image => image.selected)) setEnableAddButton(true);
     else setEnableAddButton(false);
   };
 
   const deleteImages = () => {
-    const deletedImages = tempDeletedImages.filter(image => image.selected);
-    const removeImagesFromList = tempDeletedImages.filter(
-      image => !image.selected
-    );
-    deletedImages.map(image => {
-      delete image.selected;
-      return image;
-    });
-    setSelectableImages([...selectableImages, ...deletedImages]);
-    setCarouselImages(removeImagesFromList);
-    setTempDeletedImages(removeImagesFromList);
+    deleteImagesFromCarousel(tempDeletedImages);
+    setTempDeletedImages(carouselImages);
     setEnableAddButton(false);
     setImageView({});
   };
