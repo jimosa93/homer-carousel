@@ -28,9 +28,13 @@ const ImageSelector = () => {
   return (
     <div className="row image-selector mb-5 border pt-2 pb-2">
       <div className="col">
-        {imageGallery.length > 0 && (
+        {imageGallery.length > 0 ? (
           <div className="alert alert-primary" role="alert">
             Select images from gallery to add to carousel
+          </div>
+        ) : (
+          <div class="alert alert-warning" role="alert">
+            No images available
           </div>
         )}
       </div>
